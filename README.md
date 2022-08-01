@@ -18,7 +18,7 @@ fixme
   - [ ] Arch Linux
   - [ ] Artix Linux
   - [ ] Gentoo Linux
-  - [ ] OpenBSD
+  - [ ] FreeBSD
 - [ ] Automation of base-OS configuration
 
 # Authors
