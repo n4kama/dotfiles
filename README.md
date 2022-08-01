@@ -4,14 +4,23 @@
 
 fixme
 
-# TODO
+# Requirements
 
 fixme
 
-# Requirements
-
 # Installation
 
-# AUTHORS
+fixme
+
+# TODO
+
+- [ ] Automation of base-OS installation
+  - [ ] Arch Linux
+  - [ ] Artix Linux
+  - [ ] Gentoo Linux
+  - [ ] OpenBSD
+- [ ] Automation of base-OS configuration
+
+# Authors
 
 The Man, The Myth, The Legend
