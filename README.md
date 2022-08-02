@@ -15,8 +15,8 @@ fixme
 # TODO
 
 - [ ] Automation of base-OS installation
-  - [ ] Arch Linux
-    - [ ] Installation procedure
+  - [x] Arch Linux
+    - [x] Installation procedure
   - [ ] Artix Linux
     - [ ] Installation procedure
   - [ ] Gentoo Linux
