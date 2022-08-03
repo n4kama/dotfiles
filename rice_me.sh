@@ -17,14 +17,14 @@ installpkg() {
 
 error() {
 	# Log to stderr and exit with failure
-	printf "%s\n" "$1" >&2
+	echo "$1" >&2
 	exit 1
 }
 
 main() {
 	# Check OS distribution
 	command_exists pacman ||
-		error "Are you sure you're running this on an Arch-based distribution ?"
+		error "Command not found: pacman\nAre you sure you're running this on an Arch-based distribution ?"
 
 	# Check if user is root. Install whiptail.
 	pacman --noconfirm --needed -Sy libnewt >/dev/null 2>&1 ||
