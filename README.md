@@ -28,13 +28,15 @@ fixme
     - [ ] Basic script architecture (Options handling, Error handling, ...)
     - [ ] Display server and/or Login manager installation/configuration
       - [ ] [Ly](https://github.com/fairyglade/ly) with Xorg/X11 (TUI display manager)
+      - [ ] [LightDM](https://github.com/canonical/lightdm) with Xorg/X11 (Graphical display manager)
     - [ ] Window manager installation/configuration
       - [ ] i3-gaps
       - [ ] dwm
       - [ ] QTile
       - [ ] bspwm
     - [ ] Status bar
-      - [ ] dwm bar
+      - [ ] i3bar
+      - [ ] dwm-bar
     - [ ] Terminal
       - [ ] Alacritty
     - [ ] Shell
@@ -43,7 +45,6 @@ fixme
       - [ ] fish
     - [ ] Editor
       - [ ] vim
-      - [ ] nvim
     - [ ] Font configuration
 
 # Authors
