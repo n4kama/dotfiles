@@ -59,7 +59,7 @@ change_dm_ly() {
 	# TODO
 
 	# Configuring Ly
-	systemctl enable ly
+	systemctl enable ly >/dev/null 2>&1
 }
 
 change_dm_lightdm() {
