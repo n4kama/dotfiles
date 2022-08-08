@@ -31,9 +31,7 @@ installpkg() {
 
 install_yay() {
 	# Check if yay is already installed
-	if [ $(command_exists "yay") ]; then
-		return 1
-	fi
+	command_exists "yay" && return 1
 
 	echo "[install_yay] yay is missing. Trying to install..."
 	pacman -S --needed git base-devel \
@@ -47,11 +45,11 @@ install_yay() {
 
 change_dm_ly() {
 	# Check if Ly is already installed on the system. Install it otherwise
-	if [ ! $(command_exists "ly") ]; then
+	if command_exists "ly"; then
 		# Installing Ly. Prerequisites is : yay
 		echo "[change_dm_ly] Installing Ly display manager"
 		install_yay
-		sudo -u $USERNAME yay -S --noconfirm ly
+		sudo -u $USERNAME yay -S --noconfirm ly >/dev/null 2>&1
 		echo "[change_dm_ly] Ly has been installed"
 	else
 		echo "[change_dm_ly] Ly is already installed"
