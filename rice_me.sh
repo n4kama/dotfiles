@@ -31,7 +31,7 @@ installpkg() {
 
 install_yay() {
 	# Check if yay is already installed
-	if [ command_exists "yay" ]; then
+	if [ $(command_exists "yay") ]; then
 		return 1
 	fi
 
