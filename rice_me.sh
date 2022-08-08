@@ -16,7 +16,7 @@ command_exists() {
 
 install_yay() {
 	# Check if yay is already installed
-	if [ command_exists "yay" ]
+	if [ command_exists "yay" ]; then
 		return 1
 	fi
 
@@ -24,7 +24,7 @@ install_yay() {
 	pacman -S --needed git base-devel \
 	&& cd /opt \
 	&& git clone https://aur.archlinux.org/yay.git \
-	&& chown -R $USERNAME:$USERNAME ./yay
+	&& chown -R $USERNAME:$USERNAME ./yay \
 	&& cd yay \
 	&& makepkg -si --noconfirm
 	echo "[install_yay] yay has been installed in /opt"
@@ -47,7 +47,8 @@ error_with_exit() {
 
 change_dm_ly() {
 	# Check if Ly is already installed on the system. Install it otherwise
-	if [ ! command_exists "ly" ]; then
+	LY_INSTALLED=$(command_exists "ly")
+	if [ ! LY_INSTALLED ]; then
 		# Installing Ly. Prerequisites is : yay
 		echo "[change_dm_ly] Installing Ly display manager"
 		install_yay
