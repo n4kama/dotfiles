@@ -10,7 +10,18 @@
 command_exists() {
   command -v "$@" >/dev/null 2>&1
 }
- 
+
+install_yay() {
+	# Check if yay is already installed
+	if [ command_exists "yay" ]
+		return 1
+	fi
+
+	echo "[install_yay] yay is missing. Trying to install..."
+	pacman -S --needed git base-devel && git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si
+	echo "[install_yay] yay has been installed"
+}
+
 installpkg() {
 	pacman --noconfirm --needed -S "$1" >/dev/null 2>&1
 }
@@ -28,9 +39,18 @@ error_with_exit() {
 
 change_dm_ly() {
 	# Check if Ly is already installed on the system. Install it otherwise
+	if [ ! command_exists "ly" ]; then
+		# Installing Ly. Prerequisites is : yay
+		echo "[change_dm_ly] Installing Ly display manager"
+		install_yay
+		yay -S --noconfirm ly
+		echo "[change_dm_ly] Ly has been installed"
+	else
+		echo "[change_dm_ly] Ly is already installed"
+	fi
 
 	# Configuring Ly
-	return 0
+	
 }
 
 change_dm_lightdm() {
