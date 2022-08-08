@@ -5,6 +5,9 @@
 
 ### OPTIONS AND VARIABLES ###
 
+# Name of the user who called this script 
+USERNAME=$(logname)
+
 ### FUNCTIONS ###
 
 command_exists() {
@@ -18,8 +21,13 @@ install_yay() {
 	fi
 
 	echo "[install_yay] yay is missing. Trying to install..."
-	pacman -S --needed git base-devel && git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si
-	echo "[install_yay] yay has been installed"
+	pacman -S --needed git base-devel \
+	&& cd /opt \
+	&& git clone https://aur.archlinux.org/yay.git \
+	&& chown -R $USERNAME:$USERNAME ./yay
+	&& cd yay \
+	&& makepkg -si --noconfirm
+	echo "[install_yay] yay has been installed in /opt"
 }
 
 installpkg() {
@@ -49,8 +57,11 @@ change_dm_ly() {
 		echo "[change_dm_ly] Ly is already installed"
 	fi
 
+	# Check if another dm is already configured and disable it if so
+	# TODO
+
 	# Configuring Ly
-	
+	systemctl enable ly
 }
 
 change_dm_lightdm() {
