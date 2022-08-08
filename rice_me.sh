@@ -34,7 +34,7 @@ install_yay() {
 	command_exists "yay" && return 1
 
 	echo "[install_yay] yay is missing. Trying to install..."
-	pacman -S --needed git base-devel \
+	pacman -S --needed git base-devel >/dev/null 2>&1 \
 	&& cd /opt \
 	&& git clone https://aur.archlinux.org/yay.git \
 	&& chown -R $USERNAME:$USERNAME ./yay \
@@ -46,13 +46,13 @@ install_yay() {
 change_dm_ly() {
 	# Check if Ly is already installed on the system. Install it otherwise
 	if command_exists "ly"; then
+		echo "[change_dm_ly] Ly is already installed"
+	else
 		# Installing Ly. Prerequisites is : yay
 		echo "[change_dm_ly] Installing Ly display manager"
 		install_yay
 		sudo -u $USERNAME yay -S --noconfirm ly >/dev/null 2>&1
 		echo "[change_dm_ly] Ly has been installed"
-	else
-		echo "[change_dm_ly] Ly is already installed"
 	fi
 
 	# Check if another dm is already configured and disable it if so
@@ -143,6 +143,8 @@ main() {
 	"fixme" "" ON \
 	3>&1 1>&2 2>&3 3>&1)
 	
+	clear
+
 	echo "[Display Manager] Changing to $DISPLAY_MANAGER"
 	change_dm $DISPLAY_MANAGER || error_with_exit "[Display Manager] Exiting because something went wrong while changing the display manager"
 
