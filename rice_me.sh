@@ -36,7 +36,7 @@ install_yay() {
 	echo "[install_yay] yay is missing. Trying to install..."
 	pacman -S --needed git base-devel >/dev/null 2>&1 \
 	&& cd /opt \
-	&& git clone https://aur.archlinux.org/yay.git \
+	&& git clone --quiet https://aur.archlinux.org/yay.git \
 	&& chown -R $USERNAME:$USERNAME ./yay \
 	&& cd yay \
 	&& sudo -u $USERNAME makepkg -si --noconfirm >/dev/null 2>&1
