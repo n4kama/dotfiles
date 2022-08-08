@@ -16,19 +16,52 @@ installpkg() {
 }
 
 error() {
+	# Log to stderr
+	echo "$1" >&2
+}
+
+error_with_exit() {
 	# Log to stderr and exit with failure
 	echo "$1" >&2
 	exit 1
 }
 
+change_dm_ly() {
+	# Check if Ly is already installed on the system. Install it otherwise
+
+	# Configuring Ly
+	return 0
+}
+
+change_dm_lightdm() {
+	return 0
+}
+
+change_dm() {
+	# Check that only one argument is given : name of the Display Manager
+	if [ "$#" != 1 ]; then
+		error "[change_dm] No more/less than one argument is allowed" && return 1
+	fi
+
+	# Check for compatibility issues
+	# TODO
+
+	# Install the choosen Display Manager
+	case "$1" in
+		"Ly") change_dm_ly;;
+		"LightDM") change_dm_lightdm;;
+		*) error "[change_dm] Unknown display manager : $1" && return 1
+	esac
+}
+
 main() {
 	# # Check OS distribution
 	# command_exists pacman ||
-	# 	error "Command not found: pacman\nAre you sure you're running this on an Arch-based distribution ?"
+	# 	error_with_exit "Command not found: pacman\nAre you sure you're running this on an Arch-based distribution ?"
 
 	# # Check if user is root. Install whiptail.
 	# pacman --noconfirm --needed -Sy libnewt >/dev/null 2>&1 ||
-	# 	error "Are you sure you're running this as the root user, have an internet connection ?"
+	# 	error_with_exit "Are you sure you're running this as the root user, have an internet connection ?"
 	
 	# Select Display server and Login manager
 	# Default is set on 'Ly'
@@ -82,7 +115,7 @@ main() {
 	3>&1 1>&2 2>&3 3>&1)
 	
 	echo "[Display Manager] Changing to $DISPLAY_MANAGER"
-	# FIXME
+	change_dm $DISPLAY_MANAGER || error_with_exit "[Display Manager] Exiting because something went wrong while changing the display manager"
 
 	echo "[Window Manager] Changing to $WINDOW_MANAGER"
 	# FIXME
