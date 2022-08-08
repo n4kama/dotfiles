@@ -51,7 +51,7 @@ change_dm_ly() {
 		# Installing Ly. Prerequisites is : yay
 		echo "[change_dm_ly] Installing Ly display manager"
 		install_yay
-		yay -S --noconfirm ly
+		sudo -u $USERNAME yay -S --noconfirm ly
 		echo "[change_dm_ly] Ly has been installed"
 	else
 		echo "[change_dm_ly] Ly is already installed"
