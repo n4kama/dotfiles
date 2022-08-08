@@ -14,6 +14,21 @@ command_exists() {
   command -v "$@" >/dev/null 2>&1
 }
 
+error() {
+	# Log to stderr
+	echo "$1" >&2
+}
+
+error_with_exit() {
+	# Log to stderr and exit with failure
+	echo "$1" >&2
+	exit 1
+}
+
+installpkg() {
+	pacman --noconfirm --needed -S "$1" >/dev/null 2>&1
+}
+
 install_yay() {
 	# Check if yay is already installed
 	if [ command_exists "yay" ]; then
@@ -28,21 +43,6 @@ install_yay() {
 	&& cd yay \
 	&& makepkg -si --noconfirm
 	echo "[install_yay] yay has been installed in /opt"
-}
-
-installpkg() {
-	pacman --noconfirm --needed -S "$1" >/dev/null 2>&1
-}
-
-error() {
-	# Log to stderr
-	echo "$1" >&2
-}
-
-error_with_exit() {
-	# Log to stderr and exit with failure
-	echo "$1" >&2
-	exit 1
 }
 
 change_dm_ly() {
@@ -87,13 +87,13 @@ change_dm() {
 }
 
 main() {
-	# # Check OS distribution
-	# command_exists pacman ||
-	# 	error_with_exit "Command not found: pacman\nAre you sure you're running this on an Arch-based distribution ?"
+	# Check OS distribution
+	command_exists pacman ||
+		error_with_exit "Command not found: pacman\nAre you sure you're running this on an Arch-based distribution ?"
 
-	# # Check if user is root. Install whiptail.
-	# pacman --noconfirm --needed -Sy libnewt >/dev/null 2>&1 ||
-	# 	error_with_exit "Are you sure you're running this as the root user, have an internet connection ?"
+	# Check if user is root. Install whiptail.
+	pacman --noconfirm --needed -Sy libnewt >/dev/null 2>&1 ||
+		error_with_exit "Are you sure you're running this as the root user, have an internet connection ?"
 	
 	# Select Display server and Login manager
 	# Default is set on 'Ly'
