@@ -41,7 +41,7 @@ install_yay() {
 	&& git clone https://aur.archlinux.org/yay.git \
 	&& chown -R $USERNAME:$USERNAME ./yay \
 	&& cd yay \
-	&& sudo -u $USERNAME makepkg -si --noconfirm
+	&& sudo -u $USERNAME makepkg -si --noconfirm >/dev/null 2>&1
 	echo "[install_yay] yay has been installed in /opt"
 }
 
