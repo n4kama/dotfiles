@@ -41,14 +41,13 @@ install_yay() {
 	&& git clone https://aur.archlinux.org/yay.git \
 	&& chown -R $USERNAME:$USERNAME ./yay \
 	&& cd yay \
-	&& makepkg -si --noconfirm
+	&& sudo -u $USERNAME makepkg -si --noconfirm
 	echo "[install_yay] yay has been installed in /opt"
 }
 
 change_dm_ly() {
 	# Check if Ly is already installed on the system. Install it otherwise
-	LY_INSTALLED=$(command_exists "ly")
-	if [ ! LY_INSTALLED ]; then
+	if [ ! $(command_exists "ly") ]; then
 		# Installing Ly. Prerequisites is : yay
 		echo "[change_dm_ly] Installing Ly display manager"
 		install_yay
