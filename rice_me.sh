@@ -121,8 +121,21 @@ change_statusbar_i3bar() {
 }
 
 change_term_alactritty() {
-	#TODO
-	return 1
+	# Check if Alacritty is already installed on the system. Install it otherwise
+	if command_exists "alacritty"; then
+		echo "[change_term_alactritty] Alacritty is already installed"
+	else
+		# Installing Alacritty.
+		echo "[change_term_alactritty] Alacritty is missing. Trying to install..."
+		pacman -S --noconfirm --needed alacritty >/dev/null 2>&1
+		echo "[change_term_alactritty] Alacritty has been installed"
+	fi
+
+	# Check if another terminal is already configured and disable it if so
+	# TODO
+
+	# Configuring Alacritty
+	# TODO
 }
 
 change_shell_bash() {
