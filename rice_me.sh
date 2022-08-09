@@ -78,8 +78,8 @@ change_dm() {
 
 	# Install the choosen Display Manager
 	case "$1" in
-		"Ly") return change_dm_ly;;
-		"LightDM") return change_dm_lightdm;;
+		"Ly") change_dm_ly;;
+		"LightDM") change_dm_lightdm;;
 		*) error "[change_dm] Unknown display manager : $1" && return 1
 	esac
 }
