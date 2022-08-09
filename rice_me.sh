@@ -25,16 +25,12 @@ error_with_exit() {
 	exit 1
 }
 
-installpkg() {
-	pacman --noconfirm --needed -S "$1" >/dev/null 2>&1
-}
-
 install_yay() {
 	# Check if yay is already installed
 	command_exists "yay" && return 0
 
 	echo "[install_yay] yay is missing. Trying to install..."
-	pacman -S --needed git base-devel >/dev/null 2>&1 \
+	pacman -S --noconfirm --needed git base-devel >/dev/null 2>&1 \
 	&& cd /opt \
 	&& git clone --quiet https://aur.archlinux.org/yay.git \
 	&& chown -R $USERNAME:$USERNAME ./yay \
@@ -45,8 +41,21 @@ install_yay() {
 }
 
 change_dm_lightdm() {
+	# Check if LightDM is already installed on the system. Install it otherwise
+	if command_exists "lightdm"; then
+		echo "[change_dm_lightdm] LightDM is already installed"
+	else
+		# Installing Ly. Prerequisites is : yay
+		echo "[change_dm_lightdm] LightDM display manager is missing. Trying to install..."
+		pacman -S --noconfirm --needed lightdm lightdm-gtk-greeter >/dev/null 2>&1
+		echo "[change_dm_lightdm] LightDM has been installed"
+	fi
+
+	# Check if another dm is already configured and disable it if so
 	# TODO
-	return 1
+
+	# Configuring LightDM
+	systemctl enable lightdm >/dev/null 2>&1
 }
 
 change_dm_ly() {
@@ -79,8 +88,21 @@ change_wm_dwm() {
 }
 
 change_wm_i3gaps() {
+	# Check if i3-gaps is already installed on the system. Install it otherwise
+	if command_exists "i3-gaps"; then
+		echo "[change_wm_i3gaps] i3-gaps is already installed"
+	else
+		# Installing i3-gaps.
+		echo "[change_wm_i3gaps] i3-gaps is missing. Trying to install..."
+		pacman -S --noconfirm --needed i3-gaps i3blocks i3lock numlockx >/dev/null 2>&1
+		echo "[change_wm_i3gaps] i3-gaps has been installed"
+	fi
+
+	# Check if another window manager is already configured and disable it if so
 	# TODO
-	return 1
+
+	# Configuring i3-gaps
+	# TODO
 }
 
 change_wm_qtile() {
