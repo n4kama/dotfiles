@@ -44,6 +44,11 @@ install_yay() {
 	echo "[install_yay] yay has been installed in /opt"
 }
 
+change_dm_lightdm() {
+	# TODO
+	return 1
+}
+
 change_dm_ly() {
 	# Check if Ly is already installed on the system. Install it otherwise
 	if command_exists "ly"; then
@@ -63,8 +68,59 @@ change_dm_ly() {
 	systemctl enable ly >/dev/null 2>&1
 }
 
-change_dm_lightdm() {
-	return 0
+change_wm_bspwm() {
+	# TODO
+	return 1
+}
+
+change_wm_dwm() {
+	# TODO
+	return 1
+}
+
+change_wm_i3gaps() {
+	# TODO
+	return 1
+}
+
+change_wm_qtile() {
+	# TODO
+	return 1
+}
+
+change_statusbar_dwmbar() {
+	# TODO
+	return 1
+}
+
+change_statusbar_i3bar() {
+	# TODO
+	return 1
+}
+
+change_term_alactritty() {
+	#TODO
+	return 1
+}
+
+change_shell_bash() {
+	# TODO
+	return 1
+}
+
+change_shell_fish() {
+	# TODO
+	return 1
+}
+
+change_shell_zsh() {
+	# TODO
+	return 1
+}
+
+change_editor_vim() {
+	# TODO
+	return 1
 }
 
 change_dm() {
@@ -76,11 +132,81 @@ change_dm() {
 	# Check for compatibility issues
 	# TODO
 
-	# Install the choosen Display Manager
+	# Change the Display Manager
 	case "$1" in
-		"Ly") change_dm_ly;;
 		"LightDM") change_dm_lightdm;;
+		"Ly") change_dm_ly;;
 		*) error "[change_dm] Unknown display manager : $1" && return 1
+	esac
+}
+
+change_wm() {
+	# Check that only one argument is given : name of the Window Manager
+	if [ "$#" != 1 ]; then
+		error "[change_wm] No more/less than one argument is allowed" && return 1
+	fi
+
+	# Check for compatibility issues
+	# TODO
+
+	# Change the Window Manager
+	case "$1" in
+		"bspwm") change_wm_bspwm;;
+		"dwm") change_wm_dwm;;
+		"i3-gaps") change_wm_i3gaps;;
+		"QTile") change_wm_qtile;;
+		*) error "[change_wm] Unknown window manager : $1" && return 1
+	esac
+}
+
+change_statusbar() {
+	# Check that only one argument is given : name of the Status Bar
+	if [ "$#" != 1 ]; then
+		error "[change_statusbar] No more/less than one argument is allowed" && return 1
+	fi
+
+	# Check for compatibility issues
+	# TODO
+
+	# Change the Window Manager
+	case "$1" in
+		"dwm-bar") change_statusbar_dwmbar;;
+		"i3bar") change_statusbar_i3bar;;
+		*) error "[change_statusbar] Unknown status bar : $1" && return 1
+	esac
+}
+
+change_term() {
+	# Check that only one argument is given : name of the Terminal
+	if [ "$#" != 1 ]; then
+		error "[change_term] No more/less than one argument is allowed" && return 1
+	fi
+
+	# Check for compatibility issues
+	# TODO
+
+	# Change the Terminal
+	case "$1" in
+		"Alacritty") change_term_alactritty;;
+		*) error "[change_term] Unknown terminal : $1" && return 1
+	esac
+}
+
+change_shell() {
+	# Check that only one argument is given : name of the Shell
+	if [ "$#" != 1 ]; then
+		error "[change_shell] No more/less than one argument is allowed" && return 1
+	fi
+
+	# Check for compatibility issues
+	# TODO
+
+	# Change the Terminal
+	case "$1" in
+		"Bash") change_shell_bash;;
+		"Fish") change_shell_fish;;
+		"Zsh") change_shell_zsh;;
+		*) error "[change_shell] Unknown shell : $1" && return 1
 	esac
 }
 
@@ -97,25 +223,25 @@ main() {
 	# Default is set on 'Ly'
 	DISPLAY_MANAGER=$(whiptail --title "Rice me up !" \
 	--radiolist "Display server and/or Login manager" 15 65 2 \
-	"Ly" "TUI display manager with Xorg/X11" ON \
 	"LightDM" "GUI display manager with Xorg/X11" OFF \
+	"Ly" "TUI display manager with Xorg/X11" ON \
 	3>&1 1>&2 2>&3 3>&1)
 
 	# Select Window manager
 	# Default is set on 'dwm'
 	WINDOW_MANAGER=$(whiptail --title "Rice me up !" \
 	--radiolist "Window manager" 15 65 2 \
-	"i3-gaps" "i3 but with gaps !" OFF \
-	"dwm" "Suckless dynamic window manager" ON \
-	"QTile" "Window manager configured in python" OFF \
 	"bspwm" "Window manager based on binary trees" OFF \
+	"dwm" "Suckless dynamic window manager" ON \
+	"i3-gaps" "i3 but with gaps !" OFF \
+	"QTile" "Window manager configured in python" OFF \
 	3>&1 1>&2 2>&3 3>&1)
 
 	# Select Status bar
 	STATUS_BAR=$(whiptail --title "Rice me up !" \
 	--radiolist "Status bar" 15 65 2 \
-	"i3bar" "i3 status bar" OFF \
 	"dwm-bar" "dwm status bar" ON \
+	"i3bar" "i3 status bar" OFF \
 	3>&1 1>&2 2>&3 3>&1)
 
 	# Select Terminal
@@ -128,8 +254,8 @@ main() {
 	SHELL=$(whiptail --title "Rice me up !" \
 	--radiolist "Shell" 15 65 2 \
 	"Bash" "" ON \
-	"Zsh" "" OFF \
 	"Fish" "" OFF \
+	"Zsh" "" OFF \
 	3>&1 1>&2 2>&3 3>&1)
 
 	# Select Editor
@@ -150,22 +276,22 @@ main() {
 	change_dm $DISPLAY_MANAGER || error_with_exit "[Display Manager] Exiting because something went wrong while changing the display manager"
 
 	echo "[Window Manager] Changing to $WINDOW_MANAGER"
-	# FIXME
+	change_wm $WINDOW_MANAGER || error_with_exit "[Window Manager] Exiting because something went wrong while changing the window manager"
 
 	echo "[Status Bar] Changing to $STATUS_BAR"
-	# FIXME
+	change_statusbar $STATUS_BAR || error_with_exit "[Status Bar] Exiting because something went wrong while changing the status bar"
 
 	echo "[Terminal] Changing to $TERMINAL"
-	# FIXME
+	change_term $TERMINAL || error_with_exit "[Terminal] Exiting because something went wrong while changing the terminal"
 
 	echo "[Shell] Changing to $SHELL"
-	# FIXME
+	change_shell $SHELL || error_with_exit "[Shell] Exiting because something went wrong while changing the shell"
 
 	echo "[Editor] Changing to $EDITOR"
-	# FIXME
+	change_editor_vim || error_with_exit "[Editor] Exiting because something went wrong while changing the editor"
 
 	echo "[Font] Changing to $FONT"
-	# FIXME
+	echo "[Font] no font available" || error_with_exit "[Font] Exiting because something went wrong while changing the font"
 }
 
 ### SCRIPT ###
