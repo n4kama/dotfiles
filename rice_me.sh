@@ -31,7 +31,7 @@ installpkg() {
 
 install_yay() {
 	# Check if yay is already installed
-	command_exists "yay" && return 1
+	command_exists "yay" && return 0
 
 	echo "[install_yay] yay is missing. Trying to install..."
 	pacman -S --needed git base-devel >/dev/null 2>&1 \
@@ -39,7 +39,8 @@ install_yay() {
 	&& git clone --quiet https://aur.archlinux.org/yay.git \
 	&& chown -R $USERNAME:$USERNAME ./yay \
 	&& cd yay \
-	&& sudo -u $USERNAME makepkg -si --noconfirm >/dev/null 2>&1
+	&& sudo -u $USERNAME makepkg -si --noconfirm >/dev/null 2>&1 \
+	|| return 1
 	echo "[install_yay] yay has been installed in /opt"
 }
 
@@ -49,8 +50,8 @@ change_dm_ly() {
 		echo "[change_dm_ly] Ly is already installed"
 	else
 		# Installing Ly. Prerequisites is : yay
-		echo "[change_dm_ly] Installing Ly display manager"
-		install_yay
+		echo "[change_dm_ly] Ly display manager is missing. Trying to install..."
+		install_yay || return 1
 		sudo -u $USERNAME yay -S --noconfirm ly >/dev/null 2>&1
 		echo "[change_dm_ly] Ly has been installed"
 	fi
@@ -77,8 +78,8 @@ change_dm() {
 
 	# Install the choosen Display Manager
 	case "$1" in
-		"Ly") change_dm_ly;;
-		"LightDM") change_dm_lightdm;;
+		"Ly") return change_dm_ly;;
+		"LightDM") return change_dm_lightdm;;
 		*) error "[change_dm] Unknown display manager : $1" && return 1
 	esac
 }
