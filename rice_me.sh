@@ -252,7 +252,7 @@ main() {
 	# Select Window manager
 	# Default is set on 'dwm'
 	WINDOW_MANAGER=$(whiptail --title "Rice me up !" \
-	--radiolist "Window manager" 15 65 2 \
+	--radiolist "Window manager" 15 65 4 \
 	"bspwm" "Window manager based on binary trees" OFF \
 	"dwm" "Suckless dynamic window manager" ON \
 	"i3-gaps" "i3 but with gaps !" OFF \
@@ -275,7 +275,7 @@ main() {
 
 	# Select Shell
 	SHELL=$(whiptail --title "Rice me up !" \
-	--radiolist "Shell" 15 65 2 \
+	--radiolist "Shell" 15 65 3 \
 	"Bash" "" ON \
 	"Fish" "" OFF \
 	"Zsh" "" OFF \
@@ -283,16 +283,16 @@ main() {
 
 	# Select Editor
 	EDITOR=$(whiptail --title "Rice me up !" \
-	--radiolist "Editor" 15 65 2 \
+	--radiolist "Editor" 15 65 1 \
 	"vim" "" ON \
 	3>&1 1>&2 2>&3 3>&1)
 
 	# Select Font
 	FONT=$(whiptail --title "Rice me up !" \
-	--radiolist "Font" 15 65 2 \
+	--radiolist "Font" 15 65 1 \
 	"fixme" "" ON \
 	3>&1 1>&2 2>&3 3>&1)
-	
+
 	clear
 
 	echo "[Display Manager] Changing to $DISPLAY_MANAGER"
