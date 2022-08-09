@@ -270,6 +270,7 @@ main() {
 	TERMINAL=$(whiptail --title "Rice me up !" \
 	--radiolist "Terminal" 15 65 2 \
 	"Alacritty" "" ON \
+	"rxvt-unicode" "" OFF \
 	3>&1 1>&2 2>&3 3>&1)
 
 	# Select Shell
