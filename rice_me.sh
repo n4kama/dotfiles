@@ -132,7 +132,8 @@ change_term_alactritty() {
 	else
 		# Installing Alacritty.
 		echo "[change_term_alactritty] Alacritty is missing. Trying to install..."
-		pacman -S --noconfirm --needed alacritty >/dev/null 2>&1
+		pacman -S --noconfirm --needed alacritty >/dev/null 2>&1 \
+		|| (error "[ERROR][change_term_alactritty] Alacritty could NOT be installed !"; return 1)
 		echo "[change_term_alactritty] Alacritty has been installed"
 	fi
 
