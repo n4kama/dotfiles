@@ -122,6 +122,7 @@ change_statusbar_i3bar() {
 	# i3 bar comes installed with i3/i3-gaps
 	# check if it is already installed and/or currently used
 	# TODO
+	return 1
 }
 
 change_term_alactritty() {
