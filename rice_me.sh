@@ -36,7 +36,7 @@ install_yay() {
 	&& chown -R $USERNAME:$USERNAME ./yay \
 	&& cd yay \
 	&& sudo -u $USERNAME makepkg -si --noconfirm >/dev/null 2>&1 \
-	|| error "[install_yay] yay could NOT be installed !"; return 1
+	|| (error "[install_yay] yay could NOT be installed !"; return 1)
 	echo "[install_yay] yay has been installed in /opt"
 }
 
@@ -48,7 +48,7 @@ change_dm_lightdm() {
 		# Installing Ly. Prerequisites is : yay
 		echo "[change_dm_lightdm] LightDM display manager is missing. Trying to install..."
 		pacman -S --noconfirm --needed lightdm lightdm-gtk-greeter >/dev/null 2>&1 \
-		|| error "[ERROR][change_dm_lightdm] LightDM could NOT be installed !"; return 1
+		|| (error "[ERROR][change_dm_lightdm] LightDM could NOT be installed !"; return 1)
 		echo "[change_dm_lightdm] LightDM has been installed"
 	fi
 
@@ -68,7 +68,7 @@ change_dm_ly() {
 		echo "[change_dm_ly] Ly display manager is missing. Trying to install..."
 		install_yay || return 1
 		sudo -u $USERNAME yay -S --noconfirm ly >/dev/null 2>&1 \
-		|| error "[ERROR][change_dm_ly] Ly could NOT be installed !"; return 1
+		|| (error "[ERROR][change_dm_ly] Ly could NOT be installed !"; return 1)
 		echo "[change_dm_ly] Ly has been installed"
 	fi
 
@@ -97,7 +97,7 @@ change_wm_i3gaps() {
 		# Installing i3-gaps.
 		echo "[change_wm_i3gaps] i3-gaps is missing. Trying to install..."
 		pacman -S --noconfirm --needed i3-gaps i3blocks i3lock numlockx ttf-dejavu >/dev/null 2>&1 \
-		|| error "[ERROR][change_wm_i3gaps] i3-gaps could NOT be installed !"; return 1
+		|| (error "[ERROR][change_wm_i3gaps] i3-gaps could NOT be installed !"; return 1)
 		echo "[change_wm_i3gaps] i3-gaps has been installed"
 	fi
 
