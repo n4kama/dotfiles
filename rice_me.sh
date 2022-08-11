@@ -7,6 +7,9 @@
 
 # Name of the user who called this script 
 USERNAME=$(logname)
+SCRIPT_PATH=$(readlink -f "$0")
+BASEDIR=$(dirname "$SCRIPT_PATH")
+HOMEDIR="/home/$USERNAME"
 
 ### FUNCTIONS ###
 
@@ -162,9 +165,23 @@ change_shell_zsh() {
 }
 
 change_editor_vim() {
-	# TODO
-	command_exists "vim" || return 1
-	return 0
+	# Check if Vim is already installed on the system. Install it otherwise
+	if command_exists "vim"; then
+		echo "[change_editor_vim] Vim is already installed"
+	else
+		# Installing Vim.
+		echo "[change_editor_vim] Vim is missing. Trying to install..."
+		pacman -S --noconfirm --needed vim >/dev/null 2>&1 \
+		|| (error "[ERROR][change_editor_vim] Vim could NOT be installed !"; return 1)
+		echo "[change_editor_vim] Vim has been installed"
+	fi
+
+	# Configuring Vim
+	echo "$SCRIPT_PATH"
+	echo "$BASEDIR"
+	ln -nsf "$BASEDIR/config/vimrc" "$HOMEDIR/.vimrc" >/dev/null 2>&1 \\
+	|| (error "[ERROR][change_editor_vim] Vim could NOT be configured !"; return 1)
+	echo "[change_editor_vim] Vim has been configured in : $HOMEDIR/.vimrc"
 }
 
 change_dm() {
