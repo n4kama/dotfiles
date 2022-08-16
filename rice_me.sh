@@ -7,6 +7,8 @@
 
 # Name of the user who called this script 
 USERNAME=$(logname)
+
+# Useful path & directories
 SCRIPT_PATH=$(readlink -f "$0")
 BASEDIR=$(dirname "$SCRIPT_PATH")
 HOMEDIR="/home/$USERNAME"
@@ -179,7 +181,7 @@ change_editor_vim() {
 	# Configuring Vim
 	echo "$SCRIPT_PATH"
 	echo "$BASEDIR"
-	ln -nsf "$BASEDIR/config/vimrc" "$HOMEDIR/.vimrc" >/dev/null 2>&1 \\
+	ln -nsf "$BASEDIR/config/vimrc" "$HOMEDIR/.vimrc" >/dev/null 2>&1 \
 	|| (error "[ERROR][change_editor_vim] Vim could NOT be configured !"; return 1)
 	echo "[change_editor_vim] Vim has been configured in : $HOMEDIR/.vimrc"
 }
@@ -293,17 +295,22 @@ main() {
 	WINDOW_MANAGER=$(whiptail --title "Rice me up !" \
 	--radiolist "Window manager" 15 65 4 \
 	"bspwm" "Window manager based on binary trees" OFF \
-	"dwm" "Suckless dynamic window manager" ON \
-	"i3-gaps" "i3 but with gaps !" OFF \
-	"QTile" "Window manager configured in python" OFF \
+	"dwm" "Suckless dynamic window manager. Comes with vanilla dwm status bar" OFF \
+	"i3-gaps" "i3 but with gaps ! Comes with i3bar" ON \
+	"QTile" "Window manager configured in python. Comes with vanilla qtile bar" OFF \
 	3>&1 1>&2 2>&3 3>&1)
 
 	# Select Status bar
-	STATUS_BAR=$(whiptail --title "Rice me up !" \
-	--radiolist "Status bar" 15 65 2 \
-	"dwm-bar" "dwm status bar" ON \
-	"i3bar" "i3 status bar" OFF \
-	3>&1 1>&2 2>&3 3>&1)
+	case "$WINDOW_MANAGER" in
+		"bspwm") 	STATUS_BAR=$(whiptail --title "Rice me up !" \
+								--radiolist "Status bar" 15 65 1 \
+								"polybar" "Polybar project" ON \
+								3>&1 1>&2 2>&3 3>&1
+								);;
+		"dwm") STATUS_BAR="dwm-bar";;
+		"i3-gaps") STATUS_BAR="i3bar";;
+		"QTile") STATUS_BAR="qtile-bar";;
+	esac
 
 	# Select Terminal
 	TERMINAL=$(whiptail --title "Rice me up !" \
