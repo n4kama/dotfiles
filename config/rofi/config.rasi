@@ -1,0 +1,5 @@
+// Rofi config file
+//
+
+// Import any theme config file below (one only)
+@import "gruvbox-dark.rasi"
