@@ -2,15 +2,21 @@
 
 # Information
 
-fixme
+This project aims that grouping every config file I may use in the same place.
 
 # Requirements
 
-fixme
+A physical/virtual machine.
 
 # Installation
 
-fixme
+First, `git clone` this project on your machine.
+Then :
+- run `rice_me.sh`.
+
+**OR**
+
+- Install any tool manually and make a symbolic link of its configuration file to the corresponding file located in the `config` folder of this repository.
 
 # TODO
 
