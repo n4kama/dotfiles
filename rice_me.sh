@@ -50,7 +50,7 @@ change_dm_lightdm() {
 	if command_exists "lightdm"; then
 		echo "[change_dm_lightdm] LightDM is already installed"
 	else
-		# Installing Ly. Prerequisites is : yay
+		# Installing Ly. Prerequisites : yay
 		echo "[change_dm_lightdm] LightDM display manager is missing. Trying to install..."
 		pacman -S --noconfirm --needed lightdm lightdm-gtk-greeter >/dev/null 2>&1 \
 		|| (error "[ERROR][change_dm_lightdm] LightDM could NOT be installed !"; return 1)
@@ -58,7 +58,10 @@ change_dm_lightdm() {
 	fi
 
 	# Check if another dm is already configured and disable it if so
-	# TODO
+	echo "[change_dm_lightdm] Check if another dm is already installed and disable it if so"
+	systemctl status display-manager.service >/dev/null 2>&1 \
+	&& systemctl disable display-manager.service >/dev/null 2>&1 \
+	&& error_with_exit "[ERROR][change_dm_lightdm] Could not disable previous display-manager"
 
 	# Configuring LightDM
 	systemctl enable lightdm >/dev/null 2>&1
@@ -69,7 +72,7 @@ change_dm_ly() {
 	if command_exists "ly"; then
 		echo "[change_dm_ly] Ly is already installed"
 	else
-		# Installing Ly. Prerequisites is : yay
+		# Installing Ly. Prerequisites : yay
 		echo "[change_dm_ly] Ly display manager is missing. Trying to install..."
 		install_yay || return 1
 		sudo -u $USERNAME yay -S --noconfirm ly >/dev/null 2>&1 \
@@ -78,7 +81,10 @@ change_dm_ly() {
 	fi
 
 	# Check if another dm is already configured and disable it if so
-	# TODO
+	echo "[change_dm_ly] Check if another dm is already installed and disable it if so"
+	systemctl status display-manager.service >/dev/null 2>&1 \
+	&& systemctl disable display-manager.service >/dev/null 2>&1 \
+	&& error_with_exit "[ERROR][change_dm_ly] Could not disable previous display-manager"
 
 	# Configuring Ly
 	systemctl enable ly >/dev/null 2>&1
