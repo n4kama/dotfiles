@@ -23,7 +23,7 @@ foo@bar:~$ archinstall # Follow procedure below
 ### `archinstall` procedure
 
 ---
-Among abvious settings, ensure these are set to :
+Among obvious settings, ensure these are set to :
 
 - Profile : Xorg & graphic drivers
 - Audio : Pipewire
