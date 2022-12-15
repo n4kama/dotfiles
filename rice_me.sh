@@ -107,7 +107,7 @@ change_wm_i3gaps() {
 	else
 		# Installing i3-gaps.
 		echo "[change_wm_i3gaps] i3-gaps is missing. Trying to install..."
-		pacman -S --noconfirm --needed i3-gaps i3status i3lock numlockx ttf-dejavu >/dev/null 2>&1 \
+		pacman -S --noconfirm --needed i3-gaps i3status i3lock dmenu numlockx ttf-dejavu >/dev/null 2>&1 \
 		|| (error "[ERROR][change_wm_i3gaps] i3-gaps could NOT be installed !"; return 1)
 		echo "[change_wm_i3gaps] i3-gaps has been installed"
 	fi
@@ -132,7 +132,6 @@ change_statusbar_dwmbar() {
 change_statusbar_i3bar() {
 	# i3 bar comes installed with i3/i3-gaps
 	# check if it is already installed and/or currently used
-	# TODO
 	command_exists "i3" || return 1
 	return 0
 }
