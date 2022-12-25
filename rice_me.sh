@@ -45,6 +45,42 @@ install_yay() {
 	echo "[install_yay] yay has been installed in /opt"
 }
 
+configure_rofi() {
+	# Check if Rofi is already installed on the system. Install it otherwise
+	if command_exists "rofi"; then
+		echo "[configure_rofi] Rofi is already installed"
+	else
+		# Installing Rofi.
+		echo "[configure_rofi] Rofi is missing. Trying to install..."
+		pacman -S --noconfirm --needed rofi >/dev/null 2>&1 \
+		|| (error "[ERROR][configure_rofi] Rofi could NOT be installed !"; return 1)
+		echo "[configure_rofi] Rofi has been installed"
+	fi
+
+	# Configuring Rofi
+	ln -sf "$BASEDIR/config/rofi" "$HOMEDIR/.config/rofi" >/dev/null 2>&1 \
+	|| error_with_exit "[ERROR][configure_rofi] Rofi could NOT be configured !"
+	echo "[configure_rofi] Rofi has been configured in : $HOMEDIR/.config/rofi"
+}
+
+configure_picom() {
+	# Check if Picom is already installed on the system. Install it otherwise
+	if command_exists "picom"; then
+		echo "[configure_picom] Picom is already installed"
+	else
+		# Installing Picom.
+		echo "[configure_picom] Picom is missing. Trying to install..."
+		pacman -S --noconfirm --needed picom >/dev/null 2>&1 \
+		|| error_with_exit "[ERROR][configure_picom] Picom could NOT be installed !"
+		echo "[configure_picom] Picom has been installed"
+	fi
+
+	# Configuring Picom
+	ln -sf "$BASEDIR/config/picom" "$HOMEDIR/.config/picom" >/dev/null 2>&1 \
+	|| error_with_exit "[ERROR][configure_picom] Picom could NOT be configured !"
+	echo "[configure_picom] Picom has been configured in : $HOMEDIR/.config/picom"
+}
+
 change_dm_lightdm() {
 	# Check if LightDM is already installed on the system. Install it otherwise
 	if command_exists "lightdm"; then
@@ -116,7 +152,17 @@ change_wm_i3gaps() {
 	# TODO
 
 	# Configuring i3-gaps
-	# TODO
+	echo "[change_wm_i3gaps] Configuring i3-gaps"
+	echo "[change_wm_i3gaps] Installing fonts : Terminus and Fantasque Sans Mono"
+	pacman -S --noconfirm --needed terminus-font ttf-fantasque-sans-mono
+	echo "[change_wm_i3gaps] Alacritty is needed"
+	change_term_alactritty()
+	echo "[change_wm_i3gaps] Rofi is needed"
+	configure_rofi()
+	echo "[change_wm_i3gaps] i3bar is needed"
+	change_statusbar_i3bar()
+	echo "[change_wm_i3gaps] Picom is needed"
+	configure_picom()
 }
 
 change_wm_qtile() {
@@ -132,8 +178,16 @@ change_statusbar_dwmbar() {
 change_statusbar_i3bar() {
 	# i3 bar comes installed with i3/i3-gaps
 	# check if it is already installed and/or currently used
-	command_exists "i3" || return 1
-	return 0
+	if command_exists "i3"; then
+		echo "[change_statusbar_i3bar] i3bar is already installed"
+	else
+		error_with_exit "[change_statusbar_i3bar] Please install i3 first"
+	fi
+
+	# Configuring i3bar
+	ln -sf "$BASEDIR/config/i3status" "$HOMEDIR/.config/i3status" >/dev/null 2>&1 \
+	|| error_with_exit "[ERROR][change_statusbar_i3bar] i3bar could NOT be configured !"
+	echo "[change_statusbar_i3bar] i3bar has been configured in : $HOMEDIR/.config/i3status"
 }
 
 change_term_alactritty() {
@@ -144,7 +198,7 @@ change_term_alactritty() {
 		# Installing Alacritty.
 		echo "[change_term_alactritty] Alacritty is missing. Trying to install..."
 		pacman -S --noconfirm --needed alacritty >/dev/null 2>&1 \
-		|| (error "[ERROR][change_term_alactritty] Alacritty could NOT be installed !"; return 1)
+		|| error_with_exit "[ERROR][change_term_alactritty] Alacritty could NOT be installed !"
 		echo "[change_term_alactritty] Alacritty has been installed"
 	fi
 
@@ -152,7 +206,9 @@ change_term_alactritty() {
 	# TODO
 
 	# Configuring Alacritty
-	# TODO
+	ln -sf "$BASEDIR/config/alacritty" "$HOMEDIR/.config/alacritty" >/dev/null 2>&1 \
+	|| error_with_exit "[ERROR][change_term_alactritty] Alacritty could NOT be configured !"
+	echo "[change_term_alactritty] Alacritty has been configured in : $HOMEDIR/.config/alacritty"
 }
 
 change_shell_bash() {
@@ -184,8 +240,6 @@ change_editor_vim() {
 	fi
 
 	# Configuring Vim
-	echo "$SCRIPT_PATH"
-	echo "$BASEDIR"
 	ln -nsf "$BASEDIR/config/vimrc" "$HOMEDIR/.vimrc" >/dev/null 2>&1 \
 	|| (error "[ERROR][change_editor_vim] Vim could NOT be configured !"; return 1)
 	echo "[change_editor_vim] Vim has been configured in : $HOMEDIR/.vimrc"
