@@ -156,13 +156,13 @@ change_wm_i3gaps() {
 	echo "[change_wm_i3gaps] Installing fonts : Terminus and Fantasque Sans Mono"
 	pacman -S --noconfirm --needed terminus-font ttf-fantasque-sans-mono
 	echo "[change_wm_i3gaps] Alacritty is needed"
-	change_term_alactritty()
+	change_term_alactritty
 	echo "[change_wm_i3gaps] Rofi is needed"
-	configure_rofi()
+	configure_rofi
 	echo "[change_wm_i3gaps] i3bar is needed"
-	change_statusbar_i3bar()
+	change_statusbar_i3bar
 	echo "[change_wm_i3gaps] Picom is needed"
-	configure_picom()
+	configure_picom
 }
 
 change_wm_qtile() {
